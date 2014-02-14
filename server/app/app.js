@@ -1,6 +1,6 @@
 'use strict';
 
-var dbname = 'database-name';
+var dbname = 'gadget-express';
 var port = process.env.PORT || 4000;
 
 var d = require('./lib/request-debug');
@@ -8,6 +8,8 @@ var connectMongo = require('./lib/mongodb-connection-pool').initialize(dbname);
 
 var express = require('express');
 var home = require('./routes/home');
+var users = require('./routes/users');
+var gadgets = require('./routes/gadgets');
 var app = express();
 
 /* --- pipeline begins */
@@ -19,6 +21,17 @@ app.use(express.methodOverride());
 app.use(app.router);
 
 app.get('/', d, home.index);
+app.post('/users', d, users.create);
+app.get('/users', d, users.index);
+app.get('/users/query', d, users.query);
+app.delete('/users/:id', d, users.delete);
+app.put('/users/:id', d, users.update);
+
+app.post('/gadgets', d, gadgets.create);
+app.get('/gadgets', d, gadgets.index);
+app.get('/gadgets/query', d, gadgets.query);
+app.delete('/gadgets/:id', d, gadgets.delete);
+app.put('/gadgets/:id', d, gadgets.update);
 /* --- pipeline ends   */
 
 var server = require('http').createServer(app);
