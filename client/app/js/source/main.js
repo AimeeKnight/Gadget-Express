@@ -186,7 +186,7 @@
 */
 
   function processOrder(){
-    var name = $(this).parent('.checkout').siblings('.name').text();
+    var name = $(this).parent('.checkout').siblings('.name').text() * 1;
     var cost = $(this).parent('.checkout').siblings('.cost').text() * 1;
     var startingAmount = $(this).parent('.checkout').siblings('.amount').text() * 1;
     var purchasedAmount = $(this).parent('.checkout').siblings('.totalpurchased').find('.checkout-total').find(':selected').text() * 1;
@@ -204,18 +204,20 @@
 
     $.ajax({url:url, type:type, data:data, success:success});
 
-    var user = $(this).parent('.checkout').siblings('.username').find('.checkout-user').find(':selected').text();
-    var userRow = $('#users .name:contains('+user+')');
+    var username= $(this).parent('.checkout').siblings('.username').find('.checkout-user').find(':selected').text();
+    var userRow = $('#users .name:contains('+username+')');
     var startingBalence = userRow.siblings('.balence').text() * 1;
+    var purchases = userRow.siblings('.purchases').text();
     var balence = startingBalence - total;
     console.log(balence);
+    console.log(purchases);
 
     //var userId = userRow.closest('tr').data('id');
     //var url = window.location.origin.replace(/3000/, '4000') + '/users/';
     //url += userId;
 
     //var type = 'PUT';
-    //var obj = {balence:balence};
+    //var obj = {name:username, balence:balence, purchases:purchases};
     //var data = obj;
     //var success = updateUserandGadget;
 
