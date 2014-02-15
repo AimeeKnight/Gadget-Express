@@ -185,6 +185,16 @@
     getGadgets();
   }
 
+  function buildList(name, purchasedAmount){
+    debugger;
+    var names = [];
+
+    for(var i = 0; i < purchasedAmount.length; i++){
+      names = names.push(name);
+    }
+    return names;
+  }
+
   function processOrder(){
     $(this).parent('.checkout').siblings('.username').find('.checkout-user').hide();
     $(this).parent('.checkout').siblings('.totalpurchased').find('.checkout-total').hide();
@@ -217,8 +227,13 @@
     var userRow = $('#users .name:contains('+username+')');
     var startingBalance = userRow.siblings('.balance').text() * 1;
     var purchases = userRow.siblings('.purchases').text();
-    purchases = purchases ? purchases + '  ' + name : name;
+
+    var names = buildList(name, purchasedAmount);
+
+    purchases = purchases ? purchases + '  ' + names : names;
     var balance = startingBalance - total;
+    console.log(names);
+    console.log(purchasedAmount);
     console.log(purchases);
 
     var userId = userRow.closest('tr').data('id');
