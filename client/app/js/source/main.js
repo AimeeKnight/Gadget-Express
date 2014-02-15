@@ -165,22 +165,18 @@
   }
 
 // ---------- DESTROY ---------- //
-  function deleteGadget(event){
-    var rowId = $(this).closest('tr').data('id');
+  function deleteGadget(gadgetId){
     var url = window.location.origin.replace(/3000/, '4000') + '/gadgets/';
-    url += rowId;
+    url += gadgetId;
     var type = 'DELETE';
     // node sends back the number of gadgets deleted and the gadget id
     var success = removeGadget;
 
     $.ajax({url:url, type:type, success:success});
-    event.preventDefault();
   }
 
-  function removeGadget(data){
-    if (data.deleted === 1){
-      $('tr[data-id="'+data.id+'"]').remove();
-    }
+  function removeGadget(){
+    getGadgets();
   }
 
   function processOrder(){
@@ -191,10 +187,6 @@
     var total = cost * purchasedAmount;
     var amount = startingAmount - purchasedAmount;
 
-    if (amount <= 0){
-      deleteGadget();
-    }
-
     var obj = {name:name, cost:cost, amount:amount};
 
     var gadgetId = $(this).parent('.checkout').parent('tr').data('id');
@@ -204,6 +196,10 @@
     var type = 'PUT';
     var data = obj;
     var success = updateUserandGadget;
+
+    if (amount <= 0){
+      deleteGadget(gadgetId);
+    }
 
     $.ajax({url:url, type:type, data:data, success:success});
 
@@ -225,8 +221,9 @@
     $.ajax({url:url2, type:type, data:data2, success:success});
   }
 
-  function updateUserandGadget(data){
-    console.log(data);
+  function updateUserandGadget(){
+    getUsers();
+    getGadgets();
   }
 
 })();
