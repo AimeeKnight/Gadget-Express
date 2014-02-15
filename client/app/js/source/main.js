@@ -42,18 +42,18 @@
     $('#users > tbody').empty();
     for (var i = 0; i < data.users.length; i++){
       var $name = $('<td class="name"></td>');
-      var $balence = $('<td class="balence"></td>');
+      var $balance = $('<td class="balance"></td>');
       var $purchases = $('<td class="purchases"></td>');
 
       $name.text(data.users[i].name);
-      $balence.text(data.users[i].balence);
+      $balance.text(data.users[i].balance);
       if (data.users[i].purchases.length > 0){
         $purchases.text(data.users[i].purchases.join(', '));
       }else{
         $purchases.text(data.users[i].purchases);
       }
       var $row = $('<tr>').attr('data-id', data.users[i]._id);
-      $row.append($name, $balence, $purchases);
+      $row.append($name, $balance, $purchases);
       $('#users > tbody').prepend($row);
     }
   }
@@ -66,7 +66,7 @@
     var $row = $(this).closest('tr');
 
     var name = $row.find('.name').text();
-    var balence = $row.find('.balence').text();
+    var balance = $row.find('.balance').text();
     var length = $row.find('.purchases').text();
   }
 
@@ -127,9 +127,9 @@
       var $checkout = $('<td class="checkout"></td>');
 
       var $chPurchase = $('<button class="checkout-purchase tiny radius">Purchase</button>');
-      var $chUser = $('<select class="checkout-user"></select>');
-      var $chTotal = $('<select class="checkout-total"></select>');
-      var $chButton = $('<button class="checkout-button tiny radius">Checkout</button>');
+      var $chUser = $('<select class="checkout-user"></select>').hide();
+      var $chTotal = $('<select class="checkout-total"></select>').hide();
+      var $chButton = $('<button class="checkout-button tiny radius">Checkout</button>').hide();
 
       $purchase.append($chPurchase);
       $username.append($chUser);
@@ -147,6 +147,9 @@
   }
 
   function displayCheckout(){
+    $(this).parent('.purchase').siblings('.username').find('.checkout-user').show();
+    $(this).parent('.purchase').siblings('.totalpurchased').find('.checkout-total').show();
+    $(this).parent('.purchase').siblings('.checkout').find('.checkout-button').show();
     var userDropDown = $('.checkout-user');
     var totalDropDown = $('.checkout-total');
 
@@ -183,6 +186,10 @@
   }
 
   function processOrder(){
+    $(this).parent('.checkout').siblings('.username').find('.checkout-user').hide();
+    $(this).parent('.checkout').siblings('.totalpurchased').find('.checkout-total').hide();
+    $(this).parent('.checkout').siblings('.checkout').find('.checkout-button').hide();
+
     var name = $(this).parent('.checkout').siblings('.name').text();
     var cost = $(this).parent('.checkout').siblings('.cost').text() * 1;
     var startingAmount = $(this).parent('.checkout').siblings('.amount').text() * 1;
@@ -208,17 +215,17 @@
 
     var username= $(this).parent('.checkout').siblings('.username').find('.checkout-user').find(':selected').text();
     var userRow = $('#users .name:contains('+username+')');
-    var startingBalence = userRow.siblings('.balence').text() * 1;
+    var startingBalance = userRow.siblings('.balance').text() * 1;
     var purchases = userRow.siblings('.purchases').text();
     purchases = purchases ? purchases + '  ' + name : name;
-    var balence = startingBalence - total;
+    var balance = startingBalance - total;
     console.log(purchases);
 
     var userId = userRow.closest('tr').data('id');
     var url2 = window.location.origin.replace(/3000/, '4000') + '/users/';
     url2 += userId;
 
-    var obj2 = {name:username, balence:balence, purchases:purchases};
+    var obj2 = {name:username, balance:balance, purchases:purchases};
     var data2 = obj2;
 
     $.ajax({url:url2, type:type, data:data2, success:success});
