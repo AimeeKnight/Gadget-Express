@@ -186,11 +186,11 @@
   }
 
   function buildList(name, purchasedAmount){
-    debugger;
-    var names = [];
+    var names = '';
+    var gadget = name;
 
-    for(var i = 0; i < purchasedAmount.length; i++){
-      names = names.push(name);
+    for(var i = 0; i < purchasedAmount; i++){
+      names += gadget + '  ';
     }
     return names;
   }
