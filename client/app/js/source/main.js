@@ -186,23 +186,23 @@
 */
 
   function processOrder(){
+    var name = $(this).parent('.checkout').siblings('.name').text();
     var cost = $(this).parent('.checkout').siblings('.cost').text() * 1;
     var startingAmount = $(this).parent('.checkout').siblings('.amount').text() * 1;
     var purchasedAmount = $(this).parent('.checkout').siblings('.totalpurchased').find('.checkout-total').find(':selected').text() * 1;
     var total = cost * purchasedAmount;
     var amount = startingAmount - purchasedAmount;
-    console.log(amount);
-    //var obj = {amount:amount};
+    var obj = {name:name, cost:cost, amount:amount};
 
-    //var gadgetId = $(this).parent('.checkout').parent('tr').data('id');
-    //var url = window.location.origin.replace(/3000/, '4000') + '/gadgets/';
-    //url += gadgetId;
+    var gadgetId = $(this).parent('.checkout').parent('tr').data('id');
+    var url = window.location.origin.replace(/3000/, '4000') + '/gadgets/';
+    url += gadgetId;
 
-    //var type = 'PUT';
-    //var data = obj;
-    //var success = updateUserandGadget;
+    var type = 'PUT';
+    var data = obj;
+    var success = updateUserandGadget;
 
-    //$.ajax({url:url, type:type, data:data, success:success});
+    $.ajax({url:url, type:type, data:data, success:success});
 
     var user = $(this).parent('.checkout').siblings('.username').find('.checkout-user').find(':selected').text();
     var userRow = $('#users .name:contains('+user+')');
@@ -222,8 +222,8 @@
     //$.ajax({url:url, type:type, data:data, success:success});
   }
 
-  //function updateUserandGadget(data){
-    //console.log(data);
-  //}
+  function updateUserandGadget(data){
+    console.log(data);
+  }
 
 })();
