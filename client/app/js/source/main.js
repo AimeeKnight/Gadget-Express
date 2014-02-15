@@ -156,7 +156,6 @@
 
     var high = $(this).parent('.purchase').siblings('.amount').text() * 1;
     var range = _.range(high + 1);
-    console.log(range);
 
     for (var i = 0; i < range.length; i++){
       var $option2 = $('<option>');
@@ -187,20 +186,37 @@
 */
 
   function processOrder(){
-    //var cost = $(this).parent('.checkout').siblings('.cost').text() * 1;
-    //var amount = $(this).parent('.checkout').siblings('.totalpurchased').find('.checkout-total').find(':selected').text() * 1;
+    var cost = $(this).parent('.checkout').siblings('.cost').text() * 1;
+    var startingAmount = $(this).parent('.checkout').siblings('.amount').text() * 1;
+    var purchasedAmount = $(this).parent('.checkout').siblings('.totalpurchased').find('.checkout-total').find(':selected').text() * 1;
+    var total = cost * purchasedAmount;
+    var amount = startingAmount - purchasedAmount;
+    console.log(amount);
+    //var obj = {amount:amount};
+
+    //var gadgetId = $(this).parent('.checkout').parent('tr').data('id');
+    //var url = window.location.origin.replace(/3000/, '4000') + '/gadgets/';
+    //url += gadgetId;
+
+    //var type = 'PUT';
+    //var data = obj;
+    //var success = updateUserandGadget;
+
+    //$.ajax({url:url, type:type, data:data, success:success});
+
     var user = $(this).parent('.checkout').siblings('.username').find('.checkout-user').find(':selected').text();
     var userRow = $('#users .name:contains('+user+')');
-    var userId = userRow.closest('tr').data('id');
-    //var total = cost * amount;
-    //var gadgetAmount = gadgetAmount - amount;
+    var startingBalence = userRow.siblings('.balence').text() * 1;
+    var balence = startingBalence - total;
+    console.log(balence);
 
-    var gadgetId = $(this).parent('.checkout').parent('tr').data('id');
-    var url = window.location.origin.replace(/3000/, '4000') + '/gadgets/';
-    url += gadgetId;
-    console.log(userId);
+    //var userId = userRow.closest('tr').data('id');
+    //var url = window.location.origin.replace(/3000/, '4000') + '/users/';
+    //url += userId;
+
     //var type = 'PUT';
-    //var data = total;
+    //var obj = {balence:balence};
+    //var data = obj;
     //var success = updateUserandGadget;
 
     //$.ajax({url:url, type:type, data:data, success:success});
