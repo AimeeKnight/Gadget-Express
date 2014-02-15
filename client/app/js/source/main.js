@@ -47,8 +47,11 @@
 
       $name.text(data.users[i].name);
       $balence.text(data.users[i].balence);
-      $purchases.text(data.users[i].purchases.join(', '));
-
+      if (data.users[i].purchases.length > 0){
+        $purchases.text(data.users[i].purchases.join(', '));
+      }else{
+        $purchases.text(data.users[i].purchases);
+      }
       var $row = $('<tr>').attr('data-id', data.users[i]._id);
       $row.append($name, $balence, $purchases);
       $('#users > tbody').prepend($row);
@@ -207,7 +210,7 @@
     var userRow = $('#users .name:contains('+username+')');
     var startingBalence = userRow.siblings('.balence').text() * 1;
     var purchases = userRow.siblings('.purchases').text();
-    purchases = purchases + '  ' + name;
+    purchases = purchases ? purchases + '  ' + name : name;
     var balence = startingBalence - total;
     console.log(purchases);
 
