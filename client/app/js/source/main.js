@@ -11,6 +11,7 @@
     $('#save-user').click(submitUser);
     $('#save-gadget').click(submitGadget);
     $('#gadgets').on('click', '.checkout-purchase',  displayCheckout);
+    $('#gadgets').on('click', '.checkout-button',  processOrder);
   }
 
 ///////////// USERS //////////////
@@ -122,10 +123,10 @@
       var $totalpurchased = $('<td class="totalpurchased"></td>');
       var $checkout = $('<td class="checkout"></td>');
 
-      var $chPurchase = $('<button class="checkout-purchase">Purchase</button>');
+      var $chPurchase = $('<button class="checkout-purchase tiny radius">Purchase</button>');
       var $chUser = $('<select class="checkout-user"></select>');
-      var $chTotal = $('<select class="checkout-total-purchased"></select>');
-      var $chButton = $('<button class="checkout-button">Checkout</button>');
+      var $chTotal = $('<select class="checkout-total"></select>');
+      var $chButton = $('<button class="checkout-button tiny radius">Checkout</button>');
 
       $purchase.append($chPurchase);
       $username.append($chUser);
@@ -143,15 +144,26 @@
   }
 
   function displayCheckout(){
-    var userDropDown = $('checkout-user');
-    $('#users tr').each(function(){
-      var text = $(this).find('td:first').text();
-      var $option = $('<option>');
-      $option.text(text);
-      userDropDown.append($option);
-    });
-  }
+    var userDropDown = $('.checkout-user');
+    var totalDropDown = $('.checkout-total');
 
+    $('#users .name').each(function(){
+      var text = $(this).text();
+      var $option1 = $('<option>');
+      $option1.text(text);
+      userDropDown.append($option1);
+    });
+
+    var high = $(this).parent('.purchase').siblings('.amount').text() * 1;
+    var range = _.range(high + 1);
+    console.log(range);
+
+    for (var i = 0; i < range.length; i++){
+      var $option2 = $('<option>');
+      $option2.text(i);
+      totalDropDown.append($option2);
+    }
+  }
 
 // ---------- DESTROY ---------- //
 /*
@@ -173,5 +185,29 @@
     }
   }
 */
+
+  function processOrder(){
+    //var cost = $(this).parent('.checkout').siblings('.cost').text() * 1;
+    //var amount = $(this).parent('.checkout').siblings('.totalpurchased').find('.checkout-total').find(':selected').text() * 1;
+    var user = $(this).parent('.checkout').siblings('.username').find('.checkout-user').find(':selected').text();
+    var userRow = $('#users .name:contains('+user+')');
+    var userId = userRow.closest('tr').data('id');
+    //var total = cost * amount;
+    //var gadgetAmount = gadgetAmount - amount;
+
+    var gadgetId = $(this).parent('.checkout').parent('tr').data('id');
+    var url = window.location.origin.replace(/3000/, '4000') + '/gadgets/';
+    url += gadgetId;
+    console.log(userId);
+    //var type = 'PUT';
+    //var data = total;
+    //var success = updateUserandGadget;
+
+    //$.ajax({url:url, type:type, data:data, success:success});
+  }
+
+  //function updateUserandGadget(data){
+    //console.log(data);
+  //}
 
 })();
