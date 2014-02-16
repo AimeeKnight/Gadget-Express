@@ -187,20 +187,22 @@
 
   function buildList(name, purchasedAmount){
     var names = '';
-    var gadget = name;
+    var gadget = name + ', ';
 
-    for(var i = 0; i < purchasedAmount; i++){
-      names += gadget + '  ';
+    for(var i = 1; i < purchasedAmount; i++){
+      names += gadget;
     }
-    return names;
+    return names.concat(name);
   }
 
   function processOrder(){
+    var names;
     $(this).parent('.checkout').siblings('.username').find('.checkout-user').hide();
     $(this).parent('.checkout').siblings('.totalpurchased').find('.checkout-total').hide();
     $(this).parent('.checkout').siblings('.checkout').find('.checkout-button').hide();
 
     var name = $(this).parent('.checkout').siblings('.name').text();
+
     var cost = $(this).parent('.checkout').siblings('.cost').text() * 1;
     var startingAmount = $(this).parent('.checkout').siblings('.amount').text() * 1;
     var purchasedAmount = $(this).parent('.checkout').siblings('.totalpurchased').find('.checkout-total').find(':selected').text() * 1;
@@ -228,13 +230,23 @@
     var startingBalance = userRow.siblings('.balance').text() * 1;
     var purchases = userRow.siblings('.purchases').text();
 
-    var names = buildList(name, purchasedAmount);
+    if (purchasedAmount > 1){
+      names = buildList(name, purchasedAmount);
 
-    purchases = purchases ? purchases + '  ' + names : names;
+      if (purchases === ''){
+        purchases = names;
+      }else{
+        purchases = purchases.concat(', ' + names);
+      }
+    }else{
+      if (purchases === ''){
+        purchases = name;
+      }else{
+        purchases = purchases.concat(', ' + name);
+      }
+    }
+
     var balance = startingBalance - total;
-    console.log(names);
-    console.log(purchasedAmount);
-    console.log(purchases);
 
     var userId = userRow.closest('tr').data('id');
     var url2 = window.location.origin.replace(/3000/, '4000') + '/users/';
