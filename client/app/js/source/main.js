@@ -20,7 +20,8 @@
 // ---------- CREATE ---------- //
   function submitUser(event){
     var data = $('#user').serialize();
-    var url = window.location.origin.replace(/3000/, '4000') + '/users';
+    //var url = window.location.origin.replace(/3000/, '4000') + '/users';
+    var url = window.location.origin + '4000/users';
     var type = 'POST';
     var success = newUser;
 
@@ -35,7 +36,8 @@
 
 // ---------- READ ---------- //
   function getUsers(){
-    var url = window.location.origin.replace(/3000/, '4000') + '/users';
+    //var url = window.location.origin.replace(/3000/, '4000') + '/users';
+    var url = window.location.origin + '4000/users';
     $.getJSON(url, displayUsers);
   }
 
@@ -96,7 +98,8 @@
 // ---------- CREATE ---------- //
   function submitGadget(event){
     var data = $('#gadget').serialize();
-    var url = window.location.origin.replace(/3000/, '4000') + '/gadgets';
+    //var url = window.location.origin.replace(/3000/, '4000') + '/gadgets';
+    var url = window.location.origin + '4000/gadgets';
     var type = 'POST';
     var success = newGadget;
 
@@ -111,7 +114,8 @@
 
 // ---------- READ ---------- //
   function getGadgets(){
-    var url = window.location.origin.replace(/3000/, '4000') + '/gadgets';
+    //var url = window.location.origin.replace(/3000/, '4000') + '/gadgets';
+    var url = window.location.origin + '4000/gadgets';
     $.getJSON(url, displayGadgets);
   }
 
@@ -174,7 +178,8 @@
 
 // ---------- DESTROY ---------- //
   function deleteGadget(gadgetId){
-    var url = window.location.origin.replace(/3000/, '4000') + '/gadgets/';
+    //var url = window.location.origin.replace(/3000/, '4000') + '/gadgets/';
+    var url = window.location.origin + '4000/gadgets';
     url += gadgetId;
     var type = 'DELETE';
     // node sends back the number of gadgets deleted and the gadget id
@@ -224,9 +229,11 @@
     var data2 = obj2;
 
     var gadgetId = $(this).parent('.checkout').parent('tr').data('id');
-    var url = window.location.origin.replace(/3000/, '4000') + '/gadgets/' + gadgetId;
+    //var url = window.location.origin.replace(/3000/, '4000') + '/gadgets/' + gadgetId;
+    var url = window.location.origin + '4000/gadgets/' + gadgetId;
     var userId = userRow.closest('tr').data('id');
-    var url2 = window.location.origin.replace(/3000/, '4000') + '/users/' + userId;
+    //var url2 = window.location.origin.replace(/3000/, '4000') + '/users/' + userId;
+    var url2 = window.location.origin + '4000/users/' + userId;
 
     if (amount <= 0){deleteGadget(gadgetId);}
     $.ajax({url:url, type:type, data:data, success:success});
