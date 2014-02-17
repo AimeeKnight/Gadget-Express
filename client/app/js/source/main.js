@@ -206,13 +206,13 @@
     var cost = $(this).parent('.checkout').siblings('.cost').text() * 1;
     var startingAmount = $(this).parent('.checkout').siblings('.amount').text() * 1;
     var purchasedAmount = $(this).parent('.checkout').siblings('.totalpurchased').find('.checkout-total').find(':selected').text() * 1;
+    var username= $(this).parent('.checkout').siblings('.username').find('.checkout-user').find(':selected').text();
+    var userRow = $('#users .name:contains('+username+')');
+    var startingBalance = userRow.siblings('.balance').text() * 1;
     var total = cost * purchasedAmount;
     var amount = startingAmount - purchasedAmount;
     var balance = startingBalance - total;
 
-    var username= $(this).parent('.checkout').siblings('.username').find('.checkout-user').find(':selected').text();
-    var userRow = $('#users .name:contains('+username+')');
-    var startingBalance = userRow.siblings('.balance').text() * 1;
     var purchases = userRow.siblings('.purchases').text();
     purchases = setPurchases(purchasedAmount, name, purchases);
 
