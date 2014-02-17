@@ -1,4 +1,6 @@
 (function(){
+/*jshint validthis: true */
+
 
   'use strict';
 
@@ -196,40 +198,43 @@
   }
 
   function processOrder(){
-    var names;
     $(this).parent('.checkout').siblings('.username').find('.checkout-user').hide();
     $(this).parent('.checkout').siblings('.totalpurchased').find('.checkout-total').hide();
     $(this).parent('.checkout').siblings('.checkout').find('.checkout-button').hide();
 
     var name = $(this).parent('.checkout').siblings('.name').text();
-
     var cost = $(this).parent('.checkout').siblings('.cost').text() * 1;
     var startingAmount = $(this).parent('.checkout').siblings('.amount').text() * 1;
     var purchasedAmount = $(this).parent('.checkout').siblings('.totalpurchased').find('.checkout-total').find(':selected').text() * 1;
     var total = cost * purchasedAmount;
     var amount = startingAmount - purchasedAmount;
-
-    var obj = {name:name, cost:cost, amount:amount};
-
-    var gadgetId = $(this).parent('.checkout').parent('tr').data('id');
-    var url = window.location.origin.replace(/3000/, '4000') + '/gadgets/';
-    url += gadgetId;
-
-    var type = 'PUT';
-    var data = obj;
-    var success = updateUserandGadget;
-
-    if (amount <= 0){
-      deleteGadget(gadgetId);
-    }
-
-    $.ajax({url:url, type:type, data:data, success:success});
+    var balance = startingBalance - total;
 
     var username= $(this).parent('.checkout').siblings('.username').find('.checkout-user').find(':selected').text();
     var userRow = $('#users .name:contains('+username+')');
     var startingBalance = userRow.siblings('.balance').text() * 1;
     var purchases = userRow.siblings('.purchases').text();
+    purchases = setPurchases(purchasedAmount, name, purchases);
 
+    var type = 'PUT';
+    var success = updateUserandGadget;
+    var obj = {name:name, cost:cost, amount:amount};
+    var data = obj;
+    var obj2 = {name:username, balance:balance, purchases:purchases};
+    var data2 = obj2;
+
+    var gadgetId = $(this).parent('.checkout').parent('tr').data('id');
+    var url = window.location.origin.replace(/3000/, '4000') + '/gadgets/' + gadgetId;
+    var userId = userRow.closest('tr').data('id');
+    var url2 = window.location.origin.replace(/3000/, '4000') + '/users/' + userId;
+
+    if (amount <= 0){deleteGadget(gadgetId);}
+    $.ajax({url:url, type:type, data:data, success:success});
+    $.ajax({url:url2, type:type, data:data2, success:success});
+  }
+
+  function setPurchases(purchasedAmount, name, purchases){
+    var names;
     if (purchasedAmount > 1){
       names = buildList(name, purchasedAmount);
 
@@ -245,17 +250,7 @@
         purchases = purchases.concat(', ' + name);
       }
     }
-
-    var balance = startingBalance - total;
-
-    var userId = userRow.closest('tr').data('id');
-    var url2 = window.location.origin.replace(/3000/, '4000') + '/users/';
-    url2 += userId;
-
-    var obj2 = {name:username, balance:balance, purchases:purchases};
-    var data2 = obj2;
-
-    $.ajax({url:url2, type:type, data:data2, success:success});
+    return purchases;
   }
 
   function updateUserandGadget(){
