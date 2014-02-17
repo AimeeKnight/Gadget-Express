@@ -1,3 +1,4 @@
+/*global require, console, process */
 'use strict';
 
 var dbname = 'gadget-express';
